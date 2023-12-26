@@ -9,6 +9,14 @@ import {
 } from "./userRoutes.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { getUserSettings, updateUserSettings } from "./userSettingsRoutes.js";
+import {
+  createPost,
+  deletePost,
+  getPosts,
+  getUserPosts,
+  updatePost,
+} from "./postRoutes.js";
+import { modelExists } from "../middleware/modelExistsMiddleware.js";
 
 export const registerRoutes = (app) => {
   //register all routes
@@ -25,4 +33,13 @@ export const registerRoutes = (app) => {
   //user settings routes
   app.get("/users/:id/settings", getUserSettings);
   app.post("/users/:id/settings", updateUserSettings);
+
+  //posts
+  app.get("/posts", getPosts);
+  app.get("/users/:id/posts", getUserPosts);
+  app.post("/users/:id/posts", createPost);
+
+  app.post("/posts/:id", modelExists("Post", "postId"), updatePost);
+
+  app.delete("/posts/:id", modelExists("Post"), deletePost);
 };
